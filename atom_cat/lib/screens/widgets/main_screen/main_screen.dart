@@ -1,3 +1,5 @@
+import 'package:atom_cat/domain/repositories/auth_repository.dart';
+import 'package:atom_cat/screens/navigation/main_navigation.dart';
 import 'package:flutter/material.dart';
 
 class MainScreenWidget extends StatefulWidget {
@@ -8,26 +10,73 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class MainScreenWidgetState extends State<MainScreenWidget> {
+  final AuthRepository _authRepository = AuthRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 9, 14, 26),
-      body: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Image.asset(
-                "assets/animations/car.gif",
-                height: 200.0,
-                width: 200.0,
+        backgroundColor: const Color.fromARGB(255, 9, 14, 26),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 35),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          _authRepository.logout();
+                          Navigator.of(context).pushReplacementNamed(
+                              MainNavigationRouteNames.loaderWidget);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      const Text(
+                        "Георгий",
+                        style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                ],
               ),
             ),
-          ),
-          const _MainButtons()
-        ],
-      ),
-    );
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Image.asset(
+                        "assets/animations/car.gif",
+                        height: 200.0,
+                        width: 200.0,
+                      ),
+                    ),
+                  ),
+                  const _MainButtons()
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
 
