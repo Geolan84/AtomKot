@@ -5,6 +5,10 @@ abstract class MainNavigationRouteNames {
   static const loaderWidget = '/';
   static const auth = '/auth';
   static const mainScreen = '/main_screen';
+  static const ai = 'ai';
+  static const carnight = '/carnight';
+  static const game = '/game';
+  static const paramed = '/paramed';
   static const userProfileSettings = '/main_screen/profile';
 }
 
@@ -15,6 +19,7 @@ class MainNavigation {
     MainNavigationRouteNames.loaderWidget: (_) => _screenFactory.makeLoader(),
     MainNavigationRouteNames.auth: (_) => _screenFactory.makeAuth(),
     MainNavigationRouteNames.mainScreen: (_) => _screenFactory.makeMainScreen(),
+    MainNavigationRouteNames.carnight: (_) => _screenFactory.makeCarNight(),
   };
 
   // Route<Object> onGenerateRoute(RouteSettings settings) {

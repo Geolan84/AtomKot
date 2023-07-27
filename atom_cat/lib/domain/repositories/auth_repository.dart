@@ -8,6 +8,7 @@ class AuthRepository {
   Future<bool> isAuth() async {
     final token = await _sessionDataProvider.getToken();
     final isAuth = token != null;
+    //return false;
     return isAuth;
   }
 

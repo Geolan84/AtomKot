@@ -23,6 +23,13 @@ class ScreenFactory {
     );
   }
 
+  Widget makeCarNight() {
+    return ChangeNotifierProvider(
+      create: (_) => AuthViewModel(),
+      child: const AuthWidget(),
+    );
+  }
+
   // Widget makeProfile() {
   //   return ChangeNotifierProvider(
   //     create: (_) => ProfileViewModel(),
