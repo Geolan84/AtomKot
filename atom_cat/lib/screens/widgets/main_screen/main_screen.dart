@@ -164,7 +164,7 @@ class _MainButton extends StatelessWidget {
         ),
       ),
       onTap: () {
-        print("Replace to /$section");
+        // print("Replace to /$section");
         Navigator.of(context).pushReplacementNamed('/$section');
       },
     );
