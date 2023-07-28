@@ -20,6 +20,7 @@ class MainNavigation {
     MainNavigationRouteNames.auth: (_) => _screenFactory.makeAuth(),
     MainNavigationRouteNames.mainScreen: (_) => _screenFactory.makeMainScreen(),
     MainNavigationRouteNames.carnight: (_) => _screenFactory.makeCarNight(),
+    MainNavigationRouteNames.paramed: (_) => _screenFactory.makeParamedic(),
   };
 
   // Route<Object> onGenerateRoute(RouteSettings settings) {
