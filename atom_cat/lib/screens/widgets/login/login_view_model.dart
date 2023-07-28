@@ -1,4 +1,4 @@
-import 'package:atom_cat/domain/api_client/api_client.dart';
+// import 'package:atom_cat/domain/api_client/api_client.dart';
 import 'package:atom_cat/domain/repositories/auth_repository.dart';
 import 'package:atom_cat/screens/navigation/main_navigation.dart';
 import 'package:atom_cat/screens/utils.dart';

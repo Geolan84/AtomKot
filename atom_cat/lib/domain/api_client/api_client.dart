@@ -23,9 +23,10 @@ class ApiClient {
     return result;
   }
 
-  Future<void> getGeoAddress(double lat, double lon, int radius) async{
+  Future<String> getGeoAddress(double lat, double lon, int radius) async{
+    print("$lat, $lon");
     try {
-      var url = Uri.http(hostLink, 'suggestions/api/4_1/rs/geolocate/address');
+      var url = Uri.http(geoDecoder, 'suggestions/api/4_1/rs/geolocate/address');
       var body = json.encode({"lat": lat, "lon": lon, "radius_meters": radius});
       var response = await http
           .post(url, headers: {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Token 79d5fbee680958eea83c89d08a8ac450cd306082",}, body: body)
@@ -34,6 +35,11 @@ class ApiClient {
           );
       print(response.statusCode);
       print(response.body);
+      var js = json.decode(response.body);
+      if(js["suggestions"].length != 0){
+        return js["suggestions"][0]["value"].toString();
+      }
+      return "Не удалось определить адрес";
     } on TimeoutException {
       throw Exception("Timeout...");
     }
