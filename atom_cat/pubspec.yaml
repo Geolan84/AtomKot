@@ -72,7 +72,7 @@ flutter:
     - assets/icons/belka.png
     - assets/icons/deli.png
     - assets/icons/yandex.png
-    - assets/icons/logo.jpg
+    - assets/icons/logo.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
