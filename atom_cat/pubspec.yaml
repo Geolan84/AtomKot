@@ -69,6 +69,10 @@ flutter:
     - assets/icons/paramed.png
     - assets/icons/game.png
     - assets/icons/ai.png
+    - assets/icons/belka.png
+    - assets/icons/deli.png
+    - assets/icons/yandex.png
+    - assets/icons/logo.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

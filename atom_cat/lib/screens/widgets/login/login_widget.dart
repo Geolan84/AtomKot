@@ -9,15 +9,26 @@ class AuthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 9, 14, 26),
       body: SingleChildScrollView(
         reverse: true,
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-          ),
-          child: const _ListBodyFields(),
-        ),
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height,
+            ),
+            child: const Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: _LogoImage(),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: _ListBodyFields(),
+                )
+              ],
+            ) //const _ListBodyFields(),
+            ),
       ),
     );
   }
@@ -29,15 +40,15 @@ class _ListBodyFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(18),
-      child: Column(
+      padding: const EdgeInsets.all(100),
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          _LogoImage(),
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
           _TitleInfo(),
           _LoginForm(),
           _LoginButton(),
+          _IconLine(),
           //_RegisterForgot()
         ],
       ),
@@ -47,14 +58,33 @@ class _ListBodyFields extends StatelessWidget {
 
 class _TitleInfo extends StatelessWidget {
   const _TitleInfo({Key? key}) : super(key: key);
-
+// Это прошлый код, я его поменял на нижний
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Text(
+//       //LocaleSwitcher.of(context)!.signintitle,
+//       "Авторизация",
+//       textAlign: TextAlign.center,
+//       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+//     );
+//   }
+// }
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      //LocaleSwitcher.of(context)!.signintitle,
-      "Авторизация",
-      textAlign: TextAlign.center,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          vertical: 13), // Добавляем вертикальный отступ
+      child: const Align(
+        alignment: Alignment.bottomCenter,
+        child: Text(
+          "Авторизация",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 23,
+              color: const Color.fromARGB(255, 255, 255, 255)),
+        ),
+      ),
     );
   }
 }
@@ -72,10 +102,50 @@ class _LoginButton extends StatelessWidget {
             height: 15,
             child: CircularProgressIndicator(strokeWidth: 2),
           )
-        : const Text("Войти");
+        : const Text(
+            "Войти",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+          );
     return ElevatedButton(
-      onPressed: onPressed,
-      child: child,
+        onPressed: onPressed,
+        child: child,
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all(Color.fromARGB(255, 93, 62, 194))));
+  }
+}
+
+class _IconLine extends StatelessWidget {
+  const _IconLine({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundImage: AssetImage(
+              'assets/icons/yandex.png',
+            ),
+            radius: 50,
+          ),
+          CircleAvatar(
+            backgroundImage: AssetImage(
+              'assets/icons/belka.png',
+            ),
+            radius: 50,
+          ),
+          CircleAvatar(
+            backgroundImage: AssetImage(
+              'assets/icons/deli.png',
+            ),
+            radius: 50,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -85,14 +155,19 @@ class _LogoImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(15),
-      child: Text("LOGO")
-      // Image(
-      //   image: AssetImage(
-      //     "assets/images/logo.png",
-      //   ),
-      // ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Image.asset(
+              "assets/icons/logo.jpg",
+              fit: BoxFit.contain, // чтобы картинка сохраняла свои пропорции
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -125,22 +200,31 @@ class _LogoImage extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   const _LoginForm({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     final model = context.read<AuthViewModel>();
     return Column(children: [
       const _ErrorMessageWidget(),
       TextFormField(
+        style: TextStyle(color: Colors.white),
         controller: model.emailTextInputController,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
+            fillColor: Color.fromARGB(255, 43, 41, 59),
+            filled: true,
             hintText: "Email",
+            hintStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+                color: Color.fromARGB(72, 230, 230, 230)),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.transparent),
             ),
-            enabledBorder:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.transparent),
+            )),
         keyboardType: TextInputType.emailAddress,
         validator: (val) {
           if (val == null || val.isEmpty) {
@@ -156,12 +240,21 @@ class _LoginForm extends StatelessWidget {
         controller: model.passwordTextInputController,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
+          fillColor: Color.fromARGB(255, 43, 41, 59),
+          filled: true,
           hintText: "Пароль",
+          hintStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 23,
+              color: Color.fromARGB(72, 230, 230, 230)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.transparent),
           ),
-          enabledBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
         ),
         obscureText: true,
         validator: (val) {
@@ -191,7 +284,7 @@ class _ErrorMessageWidget extends StatelessWidget {
         errorMessage,
         style: const TextStyle(
           fontSize: 17,
-          color: Colors.red,
+          color: Color.fromARGB(255, 255, 0, 0),
         ),
       ),
     );
