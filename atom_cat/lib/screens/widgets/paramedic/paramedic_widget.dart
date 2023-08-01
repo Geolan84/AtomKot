@@ -116,19 +116,18 @@ class ParamedicWidgetState extends State<ParamedicWidget> {
                 ),
                 const Expanded(
                   flex: 5,
-                  child: Center(
-                    child: Text("djfnvdjf")
-                    // child: SizedBox(
-                    //   height: 550, // card height
-                    //   child: PageView.builder(
-                    //     itemCount: 10,
-                    //     controller: PageController(viewportFraction: 0.7),
-                    //     onPageChanged: (int index) =>
-                    //         setState(() => _index = index),
-                    //     itemBuilder: _buildListItem,
-                    //   ),
-                   // ),
-                  ),
+                  child: Center(child: Text("djfnvdjf")
+                      // child: SizedBox(
+                      //   height: 550, // card height
+                      //   child: PageView.builder(
+                      //     itemCount: 10,
+                      //     controller: PageController(viewportFraction: 0.7),
+                      //     onPageChanged: (int index) =>
+                      //         setState(() => _index = index),
+                      //     itemBuilder: _buildListItem,
+                      //   ),
+                      // ),
+                      ),
                 ),
               ],
             ),
