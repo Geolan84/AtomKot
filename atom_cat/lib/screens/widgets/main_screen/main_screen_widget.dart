@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({Key? key}) : super(key: key);
 
+  
+
   @override
   MainScreenWidgetState createState() => MainScreenWidgetState();
 }
 
 class MainScreenWidgetState extends State<MainScreenWidget> {
+
+  final _authService = AuthRepository();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +94,7 @@ class MainScreenWidgetState extends State<MainScreenWidget> {
                         size: 30,
                       ),
                       onPressed: () {
-                        //_authRepository.logout();
+                        _authService.logout();
                         Navigator.of(context).pushReplacementNamed(
                             MainNavigationRouteNames.loaderWidget);
                       },
@@ -117,44 +122,8 @@ class MainScreenWidgetState extends State<MainScreenWidget> {
             ),
           ),
           const Expanded(
-            child: Center(
-              child: Text(
-                "ЭКРАН",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MainButtons extends StatelessWidget {
-  const _MainButtons({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              _MainButton("Ночной водитель",
-                  "Помогает не заснуть во время поездки", "carnight"),
-              _MainButton("Парамедик", "Инструкция по оказанию первой помощи",
-                  "paramed"),
-            ],
-          ),
-          Row(
-            children: [
-              _MainButton("Ассистент",
-                  "Анализ дорожного покрытия, аккумулятора и др.", "ai"),
-              _MainButton("Игры", "Время развлечений!", "game"),
-            ],
+            child: IndexedStack(index: 1, children: [],)
+            
           ),
         ],
       ),
