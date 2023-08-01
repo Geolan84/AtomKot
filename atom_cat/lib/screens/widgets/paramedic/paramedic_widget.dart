@@ -1,7 +1,7 @@
 import 'package:atom_cat/screens/navigation/main_navigation.dart';
 import 'package:atom_cat/screens/widgets/paramedic/paramedic_view_model.dart';
 // import 'package:permission_handler/permission_handler.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
+//import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class ParamedicWidget extends StatefulWidget {
 }
 
 class ParamedicWidgetState extends State<ParamedicWidget> {
-  int _index = 0;
+  //int _index = 0;
   List<Article> articlesList = [
     Article('assets/images/plast.png', 'Отморожение и переохлаждение',
         'Утеплить пораженные участки тела и обездвижить их, укутать пострадавшего теплой одеждой или пледом, дать теплое питье, переместить в теплое помещение.'),
@@ -137,46 +137,46 @@ class ParamedicWidgetState extends State<ParamedicWidget> {
       ),
     );
   }
-
-  Widget _buildListItem(BuildContext context, int i) {
-    print(i);
-    Article product = articlesList[i];
-
-    return Transform.scale(
-      scale: i == _index ? 1 : 0.9,
-      child: Card(
-        elevation: 6,
-        //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Center(
-            child: Column(children: [
-          Image.asset(
-            product.imagePath,
-            fit: BoxFit.fill,
-            // width: 150,
-            // height: 100,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(
-              product.title,
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              product.text,
-              style: TextStyle(fontSize: 22),
-            ),
-          ),
-        ])),
-      ),
-    );
-  }
 }
+//   Widget _buildListItem(BuildContext context, int i) {
+//     print(i);
+//     Article product = articlesList[i];
+
+//     return Transform.scale(
+//       scale: i == _index ? 1 : 0.9,
+//       child: Card(
+//         elevation: 6,
+//         //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+//         child: Center(
+//             child: Column(children: [
+//           Image.asset(
+//             product.imagePath,
+//             fit: BoxFit.fill,
+//             // width: 150,
+//             // height: 100,
+//           ),
+//           const SizedBox(
+//             height: 10,
+//           ),
+//           Padding(
+//             padding: EdgeInsets.symmetric(vertical: 10.0),
+//             child: Text(
+//               product.title,
+//               style: const TextStyle(
+//                 fontSize: 32,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//           ),
+//           Padding(
+//             padding: EdgeInsets.all(10.0),
+//             child: Text(
+//               product.text,
+//               style: TextStyle(fontSize: 22),
+//             ),
+//           ),
+//         ])),
+//       ),
+//     );
+//   }
+// }
