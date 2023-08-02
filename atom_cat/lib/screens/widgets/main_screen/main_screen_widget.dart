@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:async';
+import 'dart:math';
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({Key? key}) : super(key: key);
@@ -17,10 +18,12 @@ class MainScreenWidget extends StatefulWidget {
 class MainScreenWidgetState extends State<MainScreenWidget>
     with SingleTickerProviderStateMixin {
   final _authService = AuthRepository();
+  final randomNumberGenerator = Random();
   static const _volumeBtnChannel = MethodChannel("mychannel");
 
   int _index = 5;
-  int _counter = 180;
+  bool _carNightWorks = false;
+  int _counter = 30;
   Timer? _timer;
 
   @override
@@ -28,10 +31,16 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     _volumeBtnChannel.setMethodCallHandler((call) {
       if (call.method == "volumeBtnPressed") {
         if (call.arguments == "volume_down") {
+          if(_index == 4){
+            
+          }
           setState(() {
             _index = 4;
           });
         } else if (call.arguments == "volume_up") {
+          if(_index == 5){
+
+          }
           setState(() {
             _index = 5;
           });
@@ -42,8 +51,14 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     super.initState();
   }
 
+  void _checkDriver(){
+    var arrow = randomNumberGenerator.nextInt(2) + 4;
+    setState(() {
+      _index = arrow;
+    });
+  }
+
   void _startTimer() {
-    _counter = 180;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_counter > 0) {
@@ -52,9 +67,12 @@ class MainScreenWidgetState extends State<MainScreenWidget>
         });
       } else {
         _timer?.cancel();
+        _checkDriver();
       }
     });
   }
+
+
 
   Widget getTimerWidget() {
     return Column(
@@ -65,14 +83,30 @@ class MainScreenWidgetState extends State<MainScreenWidget>
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 130,
+            fontSize: 170,
           ),
         ),
-        ElevatedButton(
-            onPressed: () {
+        RawMaterialButton(
+          onPressed: () {
+            if(_carNightWorks){
+              _timer?.cancel();
+            } else{
               _startTimer();
-            },
-            child: const Text('Start Timer')),
+            }
+            setState(() {
+              _counter = 10;
+              _carNightWorks = !_carNightWorks;
+            });
+          },
+          elevation: 2.0,
+          fillColor: Colors.white,
+          padding: const EdgeInsets.all(15.0),
+          shape: const CircleBorder(),
+          child: Icon(_carNightWorks ? 
+            Icons.pause : Icons.play_arrow,
+            size: 75.0,
+          ),
+        )
       ],
     );
   }
@@ -169,11 +203,6 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                         child: IconButton(
                           icon: SvgPicture.asset('assets/icons/settings.svg'),
                           onPressed: () {},
-                          // icon: const Icon(
-                          //   Icons.settings,
-                          //   color: Colors.white,
-                          //   size: 32,
-                          // ),
                         ),
                       ),
                     ),
