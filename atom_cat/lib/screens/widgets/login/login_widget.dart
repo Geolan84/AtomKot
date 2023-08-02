@@ -217,14 +217,18 @@ class _LogoImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Image.asset(
-              "assets/icons/logo.jpeg",
-              fit: BoxFit.contain, // чтобы картинка сохраняла свои пропорции
+          child: ClipRect(
+            // Обернуть изображение в ClipRect
+            child: Align(
+              alignment: Alignment.topCenter,
+              heightFactor: 0.76, // Определяет видимую часть изображения
+              child: Image.asset(
+                "assets/images/cat.png",
+                fit: BoxFit.contain,
+              ),
             ),
           ),
         ),
