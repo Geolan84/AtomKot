@@ -24,7 +24,7 @@ class ApiClient {
   }
 
   Future<String> getGeoAddress(double lat, double lon, int radius) async{
-    print("$lat, $lon");
+    // print("$lat, $lon");
     try {
       var url = Uri.http(geoDecoder, 'suggestions/api/4_1/rs/geolocate/address');
       var body = json.encode({"lat": lat, "lon": lon, "radius_meters": radius});
@@ -33,8 +33,6 @@ class ApiClient {
           .timeout(
             const Duration(seconds: 5),
           );
-      print(response.statusCode);
-      print(response.body);
       var js = json.decode(response.body);
       if(js["suggestions"].length != 0){
         return js["suggestions"][0]["value"].toString();

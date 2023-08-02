@@ -36,7 +36,8 @@ dependencies:
   permission_handler: ^10.4.3
   provider: ^6.0.5
   flutter_secure_storage: ^8.0.0
-  scroll_snap_list: ^0.9.1
+  flutter_svg: ^2.0.7
+  flutter_launcher_icons: ^0.13.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,6 +57,13 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  image_path: "assets/images/cat.png"
+  # adaptive_icon_background: "#ffffff"
+  # adaptive_icon_foreground: "assets/images/car.jpg"
+
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -80,6 +88,12 @@ flutter:
     - assets/icons/geolocation.png
     - assets/icons/phone.png
     - assets/images/cat.jpg
+    - assets/images/analysis.png
+    - assets/images/left.png
+    - assets/images/right.png
+    - assets/icons/settings.svg
+    - assets/icons/adds.svg
+    - assets/images/profile.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
