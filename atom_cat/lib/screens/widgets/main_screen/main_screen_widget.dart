@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:atom_cat/domain/repositories/auth_repository.dart';
 import 'package:atom_cat/screens/navigation/main_navigation.dart';
 import 'package:atom_cat/screens/widgets/arrows/carnight_arrows.dart';
@@ -23,7 +24,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
 
   int _index = 5;
   bool _carNightWorks = false;
-  int _counter = 30;
+  int _counter = 10;
   Timer? _timer;
 
   @override
@@ -32,18 +33,24 @@ class MainScreenWidgetState extends State<MainScreenWidget>
       if (call.method == "volumeBtnPressed") {
         if (call.arguments == "volume_down") {
           if(_index == 4){
-            
+            setState(() {
+              _index = 0;
+            });
+            _startTimer();
           }
-          setState(() {
-            _index = 4;
-          });
+          // setState(() {
+          //   _index = 4;
+          // });
         } else if (call.arguments == "volume_up") {
           if(_index == 5){
-
+            setState(() {
+              _index = 0;
+            });
+            _startTimer();
           }
-          setState(() {
-            _index = 5;
-          });
+          // setState(() {
+          //   _index = 5;
+          // });
         }
       }
       return Future.value(null);
@@ -51,14 +58,17 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     super.initState();
   }
 
-  void _checkDriver(){
+  void _checkDriver() {
     var arrow = randomNumberGenerator.nextInt(2) + 4;
+    final player=AudioPlayer();
+    player.setSource(AssetSource('audio/alarm.mp3'));
     setState(() {
       _index = arrow;
-    });
+    }); 
   }
 
   void _startTimer() {
+    _counter = 10;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_counter > 0) {
@@ -94,7 +104,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
               _startTimer();
             }
             setState(() {
-              _counter = 10;
+              //_counter = 5;
               _carNightWorks = !_carNightWorks;
             });
           },
