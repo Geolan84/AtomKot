@@ -39,7 +39,7 @@ class ApiClient {
       }
       return "Не удалось определить адрес";
     } on TimeoutException {
-      throw Exception("Timeout...");
+      return "Не удалось определить адрес";
     }
   }
 }

@@ -2,6 +2,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:atom_cat/domain/repositories/auth_repository.dart';
 import 'package:atom_cat/screens/navigation/main_navigation.dart';
 import 'package:atom_cat/screens/widgets/arrows/carnight_arrows.dart';
+import 'package:atom_cat/screens/widgets/main_screen/main_screen_view_model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
@@ -19,10 +23,11 @@ class MainScreenWidget extends StatefulWidget {
 class MainScreenWidgetState extends State<MainScreenWidget>
     with SingleTickerProviderStateMixin {
   final _authService = AuthRepository();
+  final player = AudioPlayer();
   final randomNumberGenerator = Random();
   static const _volumeBtnChannel = MethodChannel("mychannel");
 
-  int _index = 5;
+  int _index = 0;
   bool _carNightWorks = false;
   int _counter = 10;
   Timer? _timer;
@@ -32,25 +37,23 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     _volumeBtnChannel.setMethodCallHandler((call) {
       if (call.method == "volumeBtnPressed") {
         if (call.arguments == "volume_down") {
-          if(_index == 4){
+          if (_index == 4) {
+            player.stop();
             setState(() {
               _index = 0;
             });
+            _counter = 10;
             _startTimer();
           }
-          // setState(() {
-          //   _index = 4;
-          // });
         } else if (call.arguments == "volume_up") {
-          if(_index == 5){
+          if (_index == 5) {
+            player.stop();
             setState(() {
               _index = 0;
             });
+            _counter = 10;
             _startTimer();
           }
-          // setState(() {
-          //   _index = 5;
-          // });
         }
       }
       return Future.value(null);
@@ -60,15 +63,14 @@ class MainScreenWidgetState extends State<MainScreenWidget>
 
   void _checkDriver() {
     var arrow = randomNumberGenerator.nextInt(2) + 4;
-    final player=AudioPlayer();
-    player.setSource(AssetSource('audio/alarm.mp3'));
+    player.play(AssetSource('audio/alarm.mp3'));
     setState(() {
       _index = arrow;
-    }); 
+    });
   }
 
   void _startTimer() {
-    _counter = 10;
+    //_counter = 10;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_counter > 0) {
@@ -82,7 +84,243 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     });
   }
 
+  Widget _getArticleWidget() {
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(5.0, 30, 5.0, 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [Text("Название совета", style: TextStyle(color: Colors.white, fontSize: 50, fontWeight: FontWeight.bold),), SizedBox(height: 10,), Text("Текст статьи", style: TextStyle(color: Colors.white, fontSize: 20,),)],
+      ),
+    );
+  }
 
+  Widget _getParamedicSection(String title, String description) {
+    return GestureDetector(
+      child: Card(
+        margin: const EdgeInsets.all(5),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        color: const Color.fromARGB(255, 25, 32, 52),
+        child: SizedBox(
+          width: 290,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 60, 10, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 22),
+                  ),
+                ),
+                Text(
+                  description,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(color: Colors.white, fontSize: 17),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          _index = 6;
+        });
+      },
+    );
+  }
+
+  Widget _getParamedicSections() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _getParamedicSection("Ушибы", "Соболезнуем"),
+        _getParamedicSection("Раны", "Соболезнуем"),
+        _getParamedicSection("Смерть", "Соболезнуем"),
+        _getParamedicSection("Ушибы", "Соболезнуем"),
+        _getParamedicSection("Раны", "Соболезнуем"),
+        _getParamedicSection("Смерть", "Соболезнуем"),
+        _getParamedicSection("Ушибы", "Соболезнуем"),
+        _getParamedicSection("Раны", "Соболезнуем"),
+        _getParamedicSection("Смерть", "Соболезнуем"),
+        _getParamedicSection("Ушибы", "Соболезнуем"),
+        _getParamedicSection("Раны", "Соболезнуем"),
+        _getParamedicSection("Смерть", "Соболезнуем"),
+      ],
+    );
+  }
+
+  Widget _getGeoButtons(BuildContext ctx) {
+    final model = context.watch<MainScreenViewModel>();
+    return Row(
+      children: [
+        Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 5.0),
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: const Color.fromARGB(255, 25, 32, 52),
+              ),
+              child: Center(
+                child: IconButton(
+                  icon: SvgPicture.asset('assets/icons/geo.svg'),
+                  onPressed: () async {
+                    model.startProgress();
+                    LocationPermission permission;
+                    permission = await Geolocator.checkPermission();
+                    if (permission == LocationPermission.denied) {
+                      permission = await Geolocator.requestPermission();
+                      if (permission == LocationPermission.deniedForever) {
+                        return;
+                      }
+                    }
+                    var res = await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.best);
+                    model.updateAddress(res.latitude, res.longitude);
+                  },
+                  iconSize: 80,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 5.0),
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: const Color.fromARGB(255, 25, 32, 52),
+              ),
+              child: Center(
+                child: IconButton(
+                  icon: SvgPicture.asset('assets/icons/share.svg'),
+                  onPressed: () {},
+                  iconSize: 80,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Container(
+            height: 210,
+            margin: const EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: const Color.fromARGB(255, 25, 32, 52),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: model.progress
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text(
+                          "Место ДТП",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        // Padding(padding: EdgeInsets.symmetric(vertical: 10.0), child: Text(model.address, style: const TextStyle(color: Colors.white, fontSize: 30),)
+                        // ),
+                        Text(
+                          model.address,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 30),
+                        ),
+                        Text(
+                          model.coords,
+                          style: const TextStyle(
+                              color: Colors.white54, fontSize: 30),
+                        ),
+                      ],
+                    ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _getCallField() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 30, bottom: 100),
+            child: Text(
+              "Медицинская\nпомощь",
+              style: TextStyle(color: Colors.white, fontSize: 40),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(
+            height: 100,
+            width: 370,
+            child: ElevatedButton(
+              onPressed: () async {
+                await launchUrl(Uri.parse("tel://112"));
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(1.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.call,
+                      size: 50,
+                    ),
+                    Text(
+                      'Вызвать скорую',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _getParamedicWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(child: _getCallField()),
+                _getGeoButtons(context),
+              ],
+            ),
+          ),
+          SingleChildScrollView(child: _getParamedicSections())
+        ],
+      ),
+    );
+  }
 
   Widget getTimerWidget() {
     return Column(
@@ -98,9 +336,9 @@ class MainScreenWidgetState extends State<MainScreenWidget>
         ),
         RawMaterialButton(
           onPressed: () {
-            if(_carNightWorks){
+            if (_carNightWorks) {
               _timer?.cancel();
-            } else{
+            } else {
               _startTimer();
             }
             setState(() {
@@ -112,8 +350,8 @@ class MainScreenWidgetState extends State<MainScreenWidget>
           fillColor: Colors.white,
           padding: const EdgeInsets.all(15.0),
           shape: const CircleBorder(),
-          child: Icon(_carNightWorks ? 
-            Icons.pause : Icons.play_arrow,
+          child: Icon(
+            _carNightWorks ? Icons.pause : Icons.play_arrow,
             size: 75.0,
           ),
         )
@@ -213,6 +451,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                         child: IconButton(
                           icon: SvgPicture.asset('assets/icons/settings.svg'),
                           onPressed: () {},
+                          iconSize: 40,
                         ),
                       ),
                     ),
@@ -280,12 +519,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                 Center(
                   child: getTimerWidget(),
                 ),
-                const Center(
-                  child: Text(
-                    "Paramedic",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                _getParamedicWidget(),
                 Center(
                   child: Image.asset('assets/images/analysis.png'),
                 ),
@@ -295,6 +529,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                 ),
                 const LeftArrowWidget(),
                 const RightArrowWidget(),
+                _getArticleWidget(),
               ],
             ),
           ),
