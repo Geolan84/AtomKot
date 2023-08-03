@@ -17,11 +17,32 @@ class AuthWidget extends StatelessWidget {
               maxHeight: MediaQuery.of(context).size.height,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const Expanded(
-                  flex: 5,
-                  child: _LogoImage(),
-                ),
+                    flex: 5,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(height: 30),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0), // Add horizontal padding
+                            child: Text(
+                              "Привет! 👋\nЯ — твой личный помощник",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 60,
+                                fontWeight: FontWeight.w600,
+                                height: 1.1,
+                                letterSpacing: 0,
+                                color: Color.fromRGBO(255, 255, 255, 1),
+                              ),
+                            ),
+                          ),
+                          _LogoImage(),
+                        ])),
                 Expanded(
                     flex: 4,
                     child: Container(
@@ -224,7 +245,7 @@ class _LogoImage extends StatelessWidget {
             // Обернуть изображение в ClipRect
             child: Align(
               alignment: Alignment.topCenter,
-              heightFactor: 0.76, // Определяет видимую часть изображения
+              heightFactor: 0.7, // Определяет видимую часть изображения
               child: Image.asset(
                 "assets/images/cat.png",
                 fit: BoxFit.contain,
@@ -267,7 +288,7 @@ class _LoginForm extends StatelessWidget {
                 width: 420,
                 // height: 92,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   controller: model.emailTextInputController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
