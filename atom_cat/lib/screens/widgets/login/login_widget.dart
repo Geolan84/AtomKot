@@ -64,58 +64,54 @@ class _ListBodyFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //padding: const EdgeInsets.symmetric(),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SizedBox(height: 47),
-          _TitleInfo(),
-          SizedBox(height: 3),
-          Text(
-            "Рады видеть вас снова!",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        SizedBox(height: 47),
+        _TitleInfo(),
+        SizedBox(height: 3),
+        Text(
+          "Рады видеть вас снова!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            height: 1.1,
+            letterSpacing: 0,
+            color: Color.fromRGBO(255, 255, 255, 0.75),
+          ),
+        ),
+        SizedBox(height: 30),
+        _LoginForm(),
+        SizedBox(height: 25),
+        _LoginButton(),
+        SizedBox(height: 15),
+        Text(
+          "войти c помощью",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 18,
               fontWeight: FontWeight.w400,
               height: 1.1,
               letterSpacing: 0,
-              color: Color.fromRGBO(255, 255, 255, 0.75),
-            ),
-          ),
-          SizedBox(height: 30),
-          _LoginForm(),
-          SizedBox(height: 25),
-          _LoginButton(),
-          SizedBox(height: 15),
-          Text(
-            "войти c помощью",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                height: 1.1,
-                letterSpacing: 0,
-                color: Color.fromRGBO(255, 255, 255, 0.5)),
-          ),
-          SizedBox(height: 20),
-          _IconLine(),
-          SizedBox(height: 40),
-          Text(
-            "АтомКот 2023",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                height: 1.1,
-                letterSpacing: 0,
-                color: Color.fromRGBO(255, 255, 255, 0.5)),
-          ),
-          SizedBox(height: 32),
-          //_RegisterForgot()
-        ],
-      ),
+              color: Color.fromRGBO(255, 255, 255, 0.5)),
+        ),
+        SizedBox(height: 20),
+        _IconLine(),
+        SizedBox(height: 40),
+        Text(
+          "АтомКот 2023",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              height: 1.1,
+              letterSpacing: 0,
+              color: Color.fromRGBO(255, 255, 255, 0.5)),
+        ),
+        SizedBox(height: 32),
+      ],
     );
   }
 }
@@ -124,21 +120,17 @@ class _TitleInfo extends StatelessWidget {
   const _TitleInfo({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // padding: const EdgeInsets.symmetric(
-      //     vertical: 13), // Добавляем вертикальный отступ
-      child: const Align(
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          "Войти в аккаунт",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 45,
-              height: 1.1,
-              letterSpacing: 0,
-              color: const Color.fromARGB(255, 255, 255, 255)),
-        ),
+    return const Align(
+      alignment: Alignment.bottomCenter,
+      child: Text(
+        "Войти в аккаунт",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 45,
+            height: 1.1,
+            letterSpacing: 0,
+            color: Color.fromARGB(255, 255, 255, 255)),
       ),
     );
   }

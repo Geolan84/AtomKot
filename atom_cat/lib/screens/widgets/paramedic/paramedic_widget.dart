@@ -1,7 +1,5 @@
 import 'package:atom_cat/screens/navigation/main_navigation.dart';
 import 'package:atom_cat/screens/widgets/paramedic/paramedic_view_model.dart';
-// import 'package:permission_handler/permission_handler.dart';
-//import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';

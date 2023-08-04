@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
+import 'package:atom_cat/screens/widgets/game/homepage.dart';
 
 import 'dart:async';
 import 'dart:math';
@@ -26,10 +27,14 @@ class MainScreenWidgetState extends State<MainScreenWidget>
   final player = AudioPlayer();
   final randomNumberGenerator = Random();
   static const _volumeBtnChannel = MethodChannel("mychannel");
+  static const _defaultTime = 100;
 
   int _index = 0;
+
   bool _carNightWorks = false;
-  int _counter = 10;
+  String _paramedTitle = "";
+  String _paramedText = "";
+  int _counter = _defaultTime;
   Timer? _timer;
 
   @override
@@ -42,7 +47,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
             setState(() {
               _index = 0;
             });
-            _counter = 10;
+            _counter = _defaultTime;
             _startTimer();
           }
         } else if (call.arguments == "volume_up") {
@@ -51,7 +56,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
             setState(() {
               _index = 0;
             });
-            _counter = 10;
+            _counter = _defaultTime;
             _startTimer();
           }
         }
@@ -70,7 +75,6 @@ class MainScreenWidgetState extends State<MainScreenWidget>
   }
 
   void _startTimer() {
-    //_counter = 10;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_counter > 0) {
@@ -84,17 +88,46 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     });
   }
 
-  Widget _getArticleWidget() {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(5.0, 30, 5.0, 5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text("Название совета", style: TextStyle(color: Colors.white, fontSize: 50, fontWeight: FontWeight.bold),), SizedBox(height: 10,), Text("Текст статьи", style: TextStyle(color: Colors.white, fontSize: 20,),)],
+  Future<void> getData() async {
+    var res = await rootBundle.loadString('assets/texts/$_paramedTitle.txt');
+    setState(() {
+      _paramedText = res;
+    });
+  }
+
+  Widget _getArticleWidget(BuildContext ctx) {
+    //final model = context.watch<MainScreenViewModel>();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 30, 5.0, 5.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _paramedTitle,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              _paramedText,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _getParamedicSection(String title, String description) {
+  Widget _getParamedicSection(String title) {
     return GestureDetector(
       child: Card(
         margin: const EdgeInsets.all(5),
@@ -120,17 +153,14 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                         fontSize: 22),
                   ),
                 ),
-                Text(
-                  description,
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(color: Colors.white, fontSize: 17),
-                )
               ],
             ),
           ),
         ),
       ),
       onTap: () {
+        _paramedTitle = title;
+        getData();
         setState(() {
           _index = 6;
         });
@@ -142,18 +172,12 @@ class MainScreenWidgetState extends State<MainScreenWidget>
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        _getParamedicSection("Ушибы", "Соболезнуем"),
-        _getParamedicSection("Раны", "Соболезнуем"),
-        _getParamedicSection("Смерть", "Соболезнуем"),
-        _getParamedicSection("Ушибы", "Соболезнуем"),
-        _getParamedicSection("Раны", "Соболезнуем"),
-        _getParamedicSection("Смерть", "Соболезнуем"),
-        _getParamedicSection("Ушибы", "Соболезнуем"),
-        _getParamedicSection("Раны", "Соболезнуем"),
-        _getParamedicSection("Смерть", "Соболезнуем"),
-        _getParamedicSection("Ушибы", "Соболезнуем"),
-        _getParamedicSection("Раны", "Соболезнуем"),
-        _getParamedicSection("Смерть", "Соболезнуем"),
+        _getParamedicSection("Порядок вызова скорой"),
+        _getParamedicSection("Извлечение пострадавшего"),
+        _getParamedicSection("Оценка состояния пострадавшего"),
+        _getParamedicSection("Как общаться с пострадавшим"),
+        _getParamedicSection("Общие принципы оказания первой помощи"),
+        _getParamedicSection("Артериальное кровотечение"),
       ],
     );
   }
@@ -234,8 +258,6 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                               fontSize: 30,
                               fontWeight: FontWeight.bold),
                         ),
-                        // Padding(padding: EdgeInsets.symmetric(vertical: 10.0), child: Text(model.address, style: const TextStyle(color: Colors.white, fontSize: 30),)
-                        // ),
                         Text(
                           model.address,
                           style: const TextStyle(
@@ -503,9 +525,9 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                 children: [
                   getMainButton("Ночной водитель",
                       "Помогает не заснуть во время поездки", "carnight"),
-                  getMainButton("Парамедик",
+                  getMainButton("Советы при ДТП",
                       "Инструкция по оказанию первой помощи", "paramed"),
-                  getMainButton("Ассистент",
+                  getMainButton("Дорожный ассистент",
                       "Анализ дорожного покрытия, аккумулятора и др.", "ai"),
                   getMainButton("Игры", "Время развлечений!", "game"),
                 ],
@@ -523,13 +545,10 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                 Center(
                   child: Image.asset('assets/images/analysis.png'),
                 ),
-                const Center(
-                  //child: Image.asset('assets/images/game')
-                  child: Text("game"),
-                ),
+                const HomePage(),
                 const LeftArrowWidget(),
                 const RightArrowWidget(),
-                _getArticleWidget(),
+                _getArticleWidget(context),
               ],
             ),
           ),
