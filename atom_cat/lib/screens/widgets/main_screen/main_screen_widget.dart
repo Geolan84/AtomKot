@@ -27,7 +27,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
   final player = AudioPlayer();
   final randomNumberGenerator = Random();
   static const _volumeBtnChannel = MethodChannel("mychannel");
-  static const _defaultTime = 100;
+  static const _defaultTime = 5;
 
   int _index = 0;
 
@@ -136,7 +136,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
         ),
         color: const Color.fromARGB(255, 25, 32, 52),
         child: SizedBox(
-          width: 290,
+          width: 250,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(10, 60, 10, 10),
             child: Column(
@@ -150,7 +150,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontSize: 22),
+                        fontSize: 18),
                   ),
                 ),
               ],
@@ -353,7 +353,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 170,
+            fontSize: 150,
           ),
         ),
         RawMaterialButton(
@@ -390,7 +390,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
         ),
         color: const Color.fromARGB(255, 16, 23, 40),
         child: SizedBox(
-          width: 290,
+          width: 260,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -528,7 +528,7 @@ class MainScreenWidgetState extends State<MainScreenWidget>
                   getMainButton("Советы при ДТП",
                       "Инструкция по оказанию первой помощи", "paramed"),
                   getMainButton("Дорожный ассистент",
-                      "Анализ дорожного покрытия, аккумулятора и др.", "ai"),
+                      "Анализ дорожного покрытия и др.", "ai"),
                   getMainButton("Игры", "Время развлечений!", "game"),
                 ],
               ),
